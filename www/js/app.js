@@ -463,15 +463,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Intercept native mobile back button (for Android / Capacitor apps)
-  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
-    const App = window.Capacitor.Plugins.App;
-    App.addListener('backButton', () => {
-      const hash = window.location.hash;
-      if (!hash || hash === '#home') {
-        App.exitApp();
-      } else {
-        window.history.back();
-      }
-    });
+  let isBackButtonRegistered = false;
+  const registerBackButtonListener = () => {
+    if (isBackButtonRegistered) return;
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+      const App = window.Capacitor.Plugins.App;
+      App.addListener('backButton', () => {
+        // If mobile drawer panel is active, close it first
+        if (typeof Drawer !== 'undefined' && Drawer.panel && Drawer.panel.classList.contains('active')) {
+          Drawer.close();
+          return;
+        }
+
+        const hash = window.location.hash;
+        if (!hash || hash === '#home') {
+          App.exitApp();
+        } else {
+          window.history.back();
+        }
+      });
+      isBackButtonRegistered = true;
+      console.log('Capacitor native back button listener registered successfully.');
+    }
+  };
+
+  registerBackButtonListener();
+  if (window.Capacitor) {
+    setTimeout(registerBackButtonListener, 200);
+    setTimeout(registerBackButtonListener, 1000);
   }
 });
