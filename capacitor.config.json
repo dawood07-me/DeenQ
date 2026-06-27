@@ -1,0 +1,6 @@
+{
+  "appId": "com.deenq.app",
+  "appName": "DeenQ",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

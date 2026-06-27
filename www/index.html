@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DeenQ - Your Modern Islamic Companion. Beautiful, lightweight app with Quran, accurate Prayer Times, Qibla compass, Tasbeeh counter, authentic Duas, Hadith, Hijri Calendar, and Mosque Finder.">
+  <title>DeenQ | Your Islamic Companion</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  
+  <!-- Preconnect Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="light-theme">
+
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <img src="assets/logo.png" alt="DeenQ Logo" class="splash-logo">
+    </div>
+  </div>
+
+  <!-- First-time Onboarding Permission Modal -->
+  <div id="permission-onboarding-modal" class="permission-onboarding-modal hide">
+    <div class="permission-card card glass-card">
+      <div class="permission-logo">
+        <img src="assets/logo.png" alt="DeenQ Logo">
+      </div>
+      <h2>Welcome to DeenQ</h2>
+      <p>To provide accurate prayer times, Qibla compass alignment, and daily reflections, DeenQ needs access to your location and device sensors.</p>
+      
+      <div class="permission-features">
+        <div class="feature-item">
+          <i class="fa-solid fa-location-dot text-emerald" style="color: var(--primary-color);"></i>
+          <div>
+            <strong>Location Services</strong>
+            <span>Used for local prayer times, Sunrise/Sunset, and Qibla calculations.</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i class="fa-solid fa-compass text-gold" style="color: var(--accent-gold);"></i>
+          <div>
+            <strong>Device Compass</strong>
+            <span>Rotates the Qibla dial in real-time as you turn your device.</span>
+          </div>
+        </div>
+      </div>
+
+      <button id="btn-grant-permissions" class="btn btn-emerald btn-full mt-3">
+        <i class="fa-solid fa-circle-check"></i> Grant Access
+      </button>
+    </div>
+  </div>
+
+  <!-- Desktop Header Navigation -->
+  <header id="app-header" class="header-glass">
+    <div class="header-container">
+      <a href="#" class="brand-logo-wrapper" onclick="router.navigate('home'); return false;">
+        <div class="logo-box">
+          <img src="assets/logo.png" alt="DeenQ Logo" class="brand-logo-img">
+        </div>
+        <span class="brand-name">Deen<span class="gold-text">Q</span></span>
+      </a>
+      
+      <!-- Top Desktop Nav Menu -->
+      <nav class="desktop-nav-menu">
+        <ul>
+          <li><a href="#home" class="nav-item active" data-view="home"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li><a href="#quran" class="nav-item" data-view="quran"><i class="fa-solid fa-book-quran"></i> Quran</a></li>
+          <li><a href="#prayer" class="nav-item" data-view="prayer"><i class="fa-solid fa-clock"></i> Prayer</a></li>
+          <li><a href="#duas" class="nav-item" data-view="duas"><i class="fa-solid fa-hands-praying"></i> Duas</a></li>
+          <li><a href="#hadith" class="nav-item" data-view="hadith"><i class="fa-solid fa-book-open"></i> Hadith</a></li>
+          <li><a href="#tasbeeh" class="nav-item" data-view="tasbeeh"><i class="fa-solid fa-calculator"></i> Tasbeeh</a></li>
+          <li><a href="#qibla" class="nav-item" data-view="qibla"><i class="fa-solid fa-compass"></i> Qibla</a></li>
+          <li><a href="#calendar" class="nav-item" data-view="calendar"><i class="fa-solid fa-calendar-days"></i> Calendar</a></li>
+          <li><a href="#settings" class="nav-item" data-view="settings"><i class="fa-solid fa-gear"></i></a></li>
+          <li><a href="#search" class="nav-item" data-view="search"><i class="fa-solid fa-magnifying-glass"></i></a></li>
+        </ul>
+      </nav>
+
+      <!-- Quick Action Buttons on Desktop Header -->
+      <div class="header-actions">
+        <button id="theme-toggle" class="btn-icon" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Top Header Bar -->
+  <div class="mobile-header-bar">
+    <div class="mobile-logo-wrapper">
+      <img src="assets/logo.png" alt="DeenQ Logo" class="mobile-brand-logo-img">
+      <span class="mobile-brand-name">Deen<span class="gold-text">Q</span></span>
+    </div>
+    <div class="mobile-header-actions">
+      <button class="btn-icon mobile-search-btn" onclick="router.navigate('search')" aria-label="Global Search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+      <button class="btn-icon mobile-theme-btn" id="mobile-theme-toggle" aria-label="Toggle Theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content Shell -->
+  <main id="app-content">
+
+    <!-- HOME VIEW -->
+    <section id="view-home" class="app-view active">
+      <!-- Islamic Banner Greeting -->
+      <div class="hero-banner">
+        <div class="hero-pattern"></div>
+        <div class="hero-text-content">
+          <span id="home-greeting" class="hero-greeting">Assalamu Alaikum</span>
+          <h1 id="home-hijri-date" class="hero-hijri">-- Ramadan ----</h1>
+          <p id="home-gregorian-date" class="hero-gregorian">Friday, 26 June 2026</p>
+        </div>
+      </div>
+
+      <!-- Live Info Widget Container (2 Column Layout) -->
+      <div class="home-grid">
+        <!-- Current Prayer Widget -->
+        <div class="home-widget card glass-card highlight-border prayer-widget">
+          <div class="widget-header">
+            <h3><i class="fa-solid fa-clock text-gold"></i> Prayer Timings</h3>
+            <span id="widget-location-name" class="badge badge-emerald"><i class="fa-solid fa-location-dot"></i> Detecting...</span>
+          </div>
+          <div class="prayer-countdown-container">
+            <span class="countdown-label">Next Prayer</span>
+            <div id="home-next-prayer-name" class="prayer-name">--</div>
+            <div id="home-next-prayer-countdown" class="prayer-timer">00:00:00</div>
+          </div>
+          <div class="prayer-current-info">
+            <span>Current: <strong id="home-current-prayer-name">--</strong></span>
+            <span id="home-current-prayer-time">--:--</span>
+          </div>
+        </div>
+
+        <!-- Verse of the Day Widget -->
+        <div class="home-widget card glass-card daily-verse-widget">
+          <div class="widget-header">
+            <h3><i class="fa-solid fa-book-quran text-emerald"></i> Verse of the Day</h3>
+            <button id="share-daily-verse" class="btn-icon-small" aria-label="Share Verse"><i class="fa-solid fa-share-nodes"></i></button>
+          </div>
+          <div class="daily-verse-content">
+            <p id="daily-verse-arabic" class="arabic-text text-right">...</p>
+            <p id="daily-verse-translation" class="translation-text">...</p>
+            <span id="daily-verse-ref" class="verse-reference">Surah --:--</span>
+          </div>
+        </div>
+
+        <!-- Hadith of the Day Widget -->
+        <div class="home-widget card glass-card daily-hadith-widget">
+          <div class="widget-header">
+            <h3><i class="fa-solid fa-book-open text-gold"></i> Daily Hadith</h3>
+            <button id="share-daily-hadith" class="btn-icon-small" aria-label="Share Hadith"><i class="fa-solid fa-share-nodes"></i></button>
+          </div>
+          <div class="daily-hadith-content">
+            <p id="daily-hadith-text" class="hadith-text">...</p>
+            <span id="daily-hadith-ref" class="hadith-reference">Bukhari</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Access Hub Grid -->
+      <div class="quick-access-section">
+        <h2 class="section-title-small">Quick Actions</h2>
+        <div class="quick-grid">
+          <div class="quick-card" onclick="router.navigate('quran')">
+            <div class="quick-icon-box bg-emerald-light"><i class="fa-solid fa-book-quran"></i></div>
+            <span>Read Quran</span>
+          </div>
+          <div class="quick-card" onclick="router.navigate('prayer')">
+            <div class="quick-icon-box bg-gold-light"><i class="fa-solid fa-clock"></i></div>
+            <span>Prayer Times</span>
+          </div>
+          <div class="quick-card" onclick="router.navigate('qibla')">
+            <div class="quick-icon-box bg-emerald-light"><i class="fa-solid fa-compass"></i></div>
+            <span>Qibla Compass</span>
+          </div>
+          <div class="quick-card" onclick="router.navigate('duas')">
+            <div class="quick-icon-box bg-gold-light"><i class="fa-solid fa-hands-praying"></i></div>
+            <span>Duas & Prayers</span>
+          </div>
+          <div class="quick-card" onclick="router.navigate('hadith')">
+            <div class="quick-icon-box bg-emerald-light"><i class="fa-solid fa-book-open"></i></div>
+            <span>Hadith Library</span>
+          </div>
+          <div class="quick-card" onclick="router.navigate('tasbeeh')">
+            <div class="quick-icon-box bg-gold-light"><i class="fa-solid fa-calculator"></i></div>
+            <span>Tasbeeh Counter</span>
+          </div>
+          <div class="quick-card" onclick="router.navigate('calendar')">
+            <div class="quick-icon-box bg-emerald-light"><i class="fa-solid fa-calendar-days"></i></div>
+            <span>Islamic Calendar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QURAN VIEW -->
+    <section id="view-quran" class="app-view">
+      <div class="view-header">
+        <h1>Holy Quran</h1>
+        <p>Read, listen, and contemplate the words of Allah.</p>
+      </div>
+
+      <!-- Continue Reading Widget -->
+      <div id="continue-reading-container" class="continue-reading-bar hide">
+        <div class="continue-reading-content" id="continue-reading-trigger">
+          <i class="fa-solid fa-bookmark text-gold"></i>
+          <div>
+            <span class="label">Recently Opened</span>
+            <span id="continue-reading-text" class="surah-info">Surah Fatiha, Ayah 1</span>
+          </div>
+        </div>
+        <button id="close-continue-reading" class="btn-close-small"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="tab-container">
+        <button class="tab-btn active" data-quran-tab="surah">Surah</button>
+        <button class="tab-btn" data-quran-tab="juz">Juz</button>
+        <button class="tab-btn" data-quran-tab="mushaf">Mushaf (PDF)</button>
+        <button class="tab-btn" data-quran-tab="bookmarks">Bookmarks</button>
+      </div>
+
+      <!-- Search Bar inside Quran -->
+      <div class="search-bar-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="quran-search" placeholder="Search Surah by name or index...">
+      </div>
+
+      <!-- Dynamic Content Tabs -->
+      <div class="quran-list-container">
+        <!-- Surah Tab List -->
+        <div id="quran-surah-list" class="quran-tab-content active grid-two">
+          <div class="skeleton-loader-card"></div>
+          <div class="skeleton-loader-card"></div>
+          <div class="skeleton-loader-card"></div>
+          <div class="skeleton-loader-card"></div>
+        </div>
+
+        <!-- Juz Tab List -->
+        <div id="quran-juz-list" class="quran-tab-content grid-three">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Mushaf (PDF) Tab List -->
+        <div id="quran-mushaf-list" class="quran-tab-content">
+          <!-- Stats bar -->
+          <div class="mushaf-stats-bar card glass-card">
+            <div class="stat-item">
+              <i class="fa-solid fa-fire text-gold"></i>
+              <div>
+                <span class="stat-label">Streak</span>
+                <span id="mushaf-streak" class="stat-val">0 Days</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <i class="fa-solid fa-clock text-emerald"></i>
+              <div>
+                <span class="stat-label">Last Read</span>
+                <span id="mushaf-last-time" class="stat-val">Never</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <i class="fa-solid fa-book-open text-primary"></i>
+              <div>
+                <span class="stat-label">Page</span>
+                <span id="mushaf-last-page" class="stat-val">Page 1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Last Read shortcut button -->
+          <button id="btn-mushaf-last-read" class="btn btn-emerald btn-full mt-2 mb-2 hide" onclick="QuranModule.jumpToLastRead()">
+            <i class="fa-solid fa-bookmark"></i> Go to Last Read (Page <span id="mushaf-last-read-page-num">1</span>)
+          </button>
+
+          <!-- Search / Page Jump control -->
+          <div class="mushaf-jump-box">
+            <div class="jump-input-wrapper">
+              <input type="number" id="mushaf-goto-page" min="1" max="611" placeholder="Enter Page (1-611)..." onkeypress="if(event.key==='Enter'){QuranModule.jumpToMushafPage(parseInt(this.value))}">
+              <button id="btn-mushaf-jump" class="btn btn-gold btn-compact" onclick="QuranModule.jumpToMushafPage(parseInt(document.getElementById('mushaf-goto-page').value))">Go</button>
+            </div>
+            <div class="bookmark-control-wrapper" style="display: flex; gap: 8px;">
+              <button id="btn-mushaf-add-bookmark" class="btn btn-outline btn-gold btn-compact" onclick="QuranModule.addMushafBookmark()">
+                <i class="fa-regular fa-bookmark"></i> Bookmark Page
+              </button>
+              <button id="btn-mushaf-fullscreen" class="btn btn-outline btn-emerald btn-compact" title="Toggle Fullscreen" onclick="QuranModule.toggleMushafFullscreen()">
+                <i class="fa-solid fa-expand"></i> Fullscreen
+              </button>
+            </div>
+          </div>
+
+          <!-- Vertical Swiping Viewer Area -->
+          <div id="mushaf-viewer-container" class="mushaf-viewer-container">
+            <div id="mushaf-pages-scroller" class="mushaf-pages-scroller">
+              <!-- Rendered canvases loaded lazily -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Bookmarks Tab List -->
+        <div id="quran-bookmarks-list" class="quran-tab-content">
+          <div class="empty-state">
+            <i class="fa-solid fa-bookmark text-muted"></i>
+            <p>No bookmarked verses yet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRAYER TIMES VIEW -->
+    <section id="view-prayer" class="app-view">
+      <div class="view-header">
+        <h1>Prayer Timings</h1>
+        <p>Stay updated with exact calculations for your location.</p>
+      </div>
+
+      <!-- Geolocation Custom Control Panel -->
+      <div class="location-panel card glass-card">
+        <div class="location-main-info">
+          <div>
+            <span class="location-label">Selected Location</span>
+            <h2 id="prayer-display-city">Mumbai, India</h2>
+            <span id="prayer-display-coords" class="coords-info">Lat: 19.0760, Lng: 72.8777</span>
+          </div>
+          <button id="btn-detect-gps" class="btn btn-emerald"><i class="fa-solid fa-location-crosshairs"></i> Auto GPS</button>
+        </div>
+        <div class="manual-location-picker">
+          <div class="divider"><span>OR SELECT CITY</span></div>
+          <div class="city-selector-row">
+            <select id="select-city-dropdown" class="select-input">
+              <option value="custom">-- Choose City --</option>
+              <optgroup label="Popular Indian Cities">
+                <option value="mumbai" selected>Mumbai</option>
+                <option value="delhi">Delhi</option>
+                <option value="bangalore">Bangalore</option>
+                <option value="hyderabad">Hyderabad</option>
+                <option value="chennai">Chennai</option>
+                <option value="kolkata">Kolkata</option>
+                <option value="ahmedabad">Ahmedabad</option>
+                <option value="pune">Pune</option>
+                <option value="lucknow">Lucknow</option>
+                <option value="jaipur">Jaipur</option>
+                <option value="patna">Patna</option>
+                <option value="kochi">Kochi</option>
+                <option value="srinagar">Srinagar</option>
+              </optgroup>
+              <optgroup label="Tamil Nadu Districts">
+                <option value="tn-ariyalur">Ariyalur</option>
+                <option value="tn-chengalpattu">Chengalpattu</option>
+                <option value="tn-chennai">Chennai (District)</option>
+                <option value="tn-coimbatore">Coimbatore</option>
+                <option value="tn-cuddalore">Cuddalore</option>
+                <option value="tn-dharmapuri">Dharmapuri</option>
+                <option value="tn-dindigul">Dindigul</option>
+                <option value="tn-erode">Erode</option>
+                <option value="tn-kallakurichi">Kallakurichi</option>
+                <option value="tn-kanchipuram">Kanchipuram</option>
+                <option value="tn-kanyakumari">Kanyakumari</option>
+                <option value="tn-karur">Karur</option>
+                <option value="tn-krishnagiri">Krishnagiri</option>
+                <option value="tn-madurai">Madurai</option>
+                <option value="tn-mayiladuthurai">Mayiladuthurai</option>
+                <option value="tn-nagapattinam">Nagapattinam</option>
+                <option value="tn-namakkal">Namakkal</option>
+                <option value="tn-nilgiris">Nilgiris (Ooty)</option>
+                <option value="tn-perambalur">Perambalur</option>
+                <option value="tn-pudukkottai">Pudukkottai</option>
+                <option value="tn-ramanathapuram">Ramanathapuram</option>
+                <option value="tn-ranipet">Ranipet</option>
+                <option value="tn-salem">Salem</option>
+                <option value="tn-sivaganga">Sivaganga</option>
+                <option value="tn-tenkasi">Tenkasi</option>
+                <option value="tn-thanjavur">Thanjavur</option>
+                <option value="tn-theni">Theni</option>
+                <option value="tn-thoothukudi">Thoothukudi</option>
+                <option value="tn-tiruchirappalli">Tiruchirappalli</option>
+                <option value="tn-tirunelveli">Tirunelveli</option>
+                <option value="tn-tirupathur">Tirupathur</option>
+                <option value="tn-tiruppur">Tiruppur</option>
+                <option value="tn-tiruvallur">Tiruvallur</option>
+                <option value="tn-tiruvannamalai">Tiruvannamalai</option>
+                <option value="tn-tiruvarur">Tiruvarur</option>
+                <option value="tn-vellore">Vellore</option>
+                <option value="tn-viluppuram">Viluppuram</option>
+                <option value="tn-virudhunagar">Virudhunagar</option>
+              </optgroup>
+              <option value="custom-global">Global City Search...</option>
+            </select>
+            <div id="global-city-search-box" class="global-search-container hide">
+              <input type="text" id="global-city-input" placeholder="Type city, e.g. London, Cairo...">
+              <button id="btn-global-city-search" class="btn btn-gold btn-compact">Fetch</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Prayer Timer Badge -->
+      <div class="prayer-banner card text-center highlight-border">
+        <div class="prayer-banner-countdown">
+          <span>Time Remaining for <strong id="prayer-countdown-name">--</strong></span>
+          <div id="prayer-countdown-timer" class="banner-timer">00:00:00</div>
+        </div>
+      </div>
+
+      <!-- Date Navigation Bar -->
+      <div class="prayer-date-nav">
+        <button id="btn-prayer-prev-day" class="btn-date-nav" aria-label="Previous Day">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="prayer-date-center">
+          <span id="prayer-date-label" class="prayer-date-label">
+            <span class="date-label-tag">Today</span>
+            <span class="date-label-full"></span>
+          </span>
+        </div>
+        <button id="btn-prayer-next-day" class="btn-date-nav" aria-label="Next Day">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button id="btn-prayer-today" class="btn-date-today" style="display: none;">
+          <i class="fa-solid fa-calendar-day"></i> Today
+        </button>
+      </div>
+
+      <!-- Swipeable Prayer Grid -->
+      <div id="prayer-swipe-area" class="prayer-swipe-area">
+        <div id="prayer-timings-grid" class="prayer-timings-grid">
+          <div class="prayer-time-card card" id="card-fajr">
+            <div class="prayer-icon"><i class="fa-solid fa-cloud"></i></div>
+            <div class="prayer-meta">
+              <h3>Fajr</h3>
+              <span>Dawn</span>
+            </div>
+            <div class="prayer-time-val" id="time-fajr">--:--</div>
+          </div>
+          <div class="prayer-time-card card" id="card-sunrise">
+            <div class="prayer-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+            <div class="prayer-meta">
+              <h3>Sunrise</h3>
+              <span>Solar Sunrise</span>
+            </div>
+            <div class="prayer-time-val" id="time-sunrise">--:--</div>
+          </div>
+          <div class="prayer-time-card card" id="card-dhuhr">
+            <div class="prayer-icon"><i class="fa-solid fa-sun"></i></div>
+            <div class="prayer-meta">
+              <h3>Dhuhr</h3>
+              <span>Midday</span>
+            </div>
+            <div class="prayer-time-val" id="time-dhuhr">--:--</div>
+          </div>
+          <div class="prayer-time-card card" id="card-asr">
+            <div class="prayer-icon"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+            <div class="prayer-meta">
+              <h3>Asr</h3>
+              <span>Afternoon</span>
+            </div>
+            <div class="prayer-time-val" id="time-asr">--:--</div>
+          </div>
+          <div class="prayer-time-card card" id="card-maghrib">
+            <div class="prayer-icon"><i class="fa-solid fa-cloud-moon"></i></div>
+            <div class="prayer-meta">
+              <h3>Maghrib</h3>
+              <span>Sunset</span>
+            </div>
+            <div class="prayer-time-val" id="time-maghrib">--:--</div>
+          </div>
+          <div class="prayer-time-card card" id="card-isha">
+            <div class="prayer-icon"><i class="fa-solid fa-moon"></i></div>
+            <div class="prayer-meta">
+              <h3>Isha</h3>
+              <span>Night</span>
+            </div>
+            <div class="prayer-time-val" id="time-isha">--:--</div>
+          </div>
+        </div>
+        <p class="swipe-hint"><i class="fa-solid fa-hand-pointer"></i> Swipe left/right to view other days</p>
+      </div>
+
+      <!-- Interactive Google Map Frame -->
+      <div class="google-map-panel card glass-card mb-2" style="margin-top: 16px;">
+        <div class="widget-header">
+          <h3><i class="fa-solid fa-map-location-dot text-emerald"></i> Location Map (Google Maps)</h3>
+        </div>
+        <div class="map-iframe-wrapper" style="position: relative; padding-bottom: 45%; height: 0; overflow: hidden; border-radius: var(--border-radius-md); background: #eee; border: 1px solid var(--card-border);">
+          <iframe id="prayer-location-map" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" src="" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <!-- Future Notification Tester Alert -->
+      <div class="notification-helper card glass-card">
+        <div class="helper-content">
+          <i class="fa-solid fa-bell text-gold"></i>
+          <div>
+            <h4>Enable Adhan Audio Notifications</h4>
+            <p>Test the Adhan notification alarm system. Works in browsers that support web audio.</p>
+          </div>
+        </div>
+        <button id="btn-test-adhan" class="btn btn-outline btn-gold btn-small">Test Adhan Sound</button>
+      </div>
+    </section>
+
+    <!-- DUAS VIEW -->
+    <section id="view-duas" class="app-view">
+      <div class="view-header">
+        <h1>Supplications (Duas)</h1>
+        <p>Beautiful, categorized authentic Duas for every occasion.</p>
+      </div>
+
+      <!-- Search Duas -->
+      <div class="search-bar-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="duas-search" placeholder="Search Duas by keyword, meaning...">
+      </div>
+
+      <!-- Duas categories grid -->
+      <div id="duas-categories-grid" class="duas-categories-grid">
+        <!-- Built Dynamically in JS -->
+      </div>
+
+      <!-- Categorized Dua List Detail Panel (Hidden by default, shown when category selected) -->
+      <div id="dua-detail-panel" class="dua-detail-panel hide">
+        <div class="panel-header">
+          <button id="btn-back-duas-grid" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Categories</button>
+          <h2 id="dua-category-title">Morning Duas</h2>
+        </div>
+        <div id="dua-items-list" class="dua-items-list">
+          <!-- Filled by Javascript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- HADITH VIEW -->
+    <section id="view-hadith" class="app-view">
+      <div class="view-header">
+        <h1>Hadith Library</h1>
+        <p>Explore authentic traditions from Bukhari, Muslim, and others.</p>
+      </div>
+
+      <!-- Search Hadith -->
+      <div class="search-bar-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="hadith-search" placeholder="Search Hadiths by keywords...">
+      </div>
+
+      <!-- Hadith Categories tabs -->
+      <div class="hadith-category-tabs scroll-x">
+        <button class="hadith-tab active" data-hadith-cat="all">All</button>
+        <button class="hadith-tab" data-hadith-cat="faith">Faith</button>
+        <button class="hadith-tab" data-hadith-cat="prayer">Prayer</button>
+        <button class="hadith-tab" data-hadith-cat="charity">Charity</button>
+        <button class="hadith-tab" data-hadith-cat="family">Family</button>
+        <button class="hadith-tab" data-hadith-cat="character">Good Character</button>
+        <button class="hadith-tab" data-hadith-cat="knowledge">Knowledge</button>
+        <button class="hadith-tab" data-hadith-cat="patience">Patience</button>
+      </div>
+
+      <!-- Hadith results list -->
+      <div id="hadith-list" class="hadith-list">
+        <!-- Loaded dynamically from Local hadith.js -->
+      </div>
+    </section>
+
+    <!-- TASBEEH VIEW -->
+    <section id="view-tasbeeh" class="app-view">
+      <div class="view-header">
+        <h1>Digital Tasbeeh</h1>
+        <p>Recite dhikr and record your count history.</p>
+      </div>
+
+      <div class="tasbeeh-layout">
+        <!-- Main Circular Counter Pad -->
+        <div class="tasbeeh-counter-card card text-center">
+          <div class="tasbeeh-dhikr-select">
+            <select id="tasbeeh-active-dhikr" class="select-input">
+              <option value="SubhanAllah">Subhan'Allah (Glory be to Allah)</option>
+              <option value="Alhamdulillah">Alhamdulillah (Praise be to Allah)</option>
+              <option value="AllahuAkbar">Allahu Akbar (Allah is the Greatest)</option>
+              <option value="Astaghfirullah">Astaghfirullah (I seek Allah's forgiveness)</option>
+              <option value="LaIlahaIllallah">La ilaha illallah (None is worthy of worship but Allah)</option>
+              <option value="Custom">Custom Dhikr...</option>
+            </select>
+            <input type="text" id="tasbeeh-custom-dhikr-input" placeholder="Type custom dhikr..." class="custom-dhikr-input hide">
+          </div>
+
+          <!-- Target Controls -->
+          <div class="target-badges-row">
+            <span class="target-btn active" data-target="33">33</span>
+            <span class="target-btn" data-target="99">99</span>
+            <span class="target-btn" data-target="100">100</span>
+            <span class="target-btn" data-target="1000">1000</span>
+            <span class="target-btn" id="btn-custom-target"><i class="fa-solid fa-edit"></i> Edit</span>
+          </div>
+          <div id="tasbeeh-custom-target-box" class="custom-target-input-box hide">
+            <input type="number" id="tasbeeh-custom-target-input" value="100" min="1">
+            <button id="btn-save-custom-target" class="btn btn-gold btn-compact">Set</button>
+          </div>
+
+          <!-- Circular Tap Target Button -->
+          <div class="tap-counter-wrapper">
+            <div id="tasbeeh-tap-zone" class="circular-counter-button">
+              <div class="circle-overlay"></div>
+              <div class="counter-display">
+                <span id="tasbeeh-count-number">0</span>
+                <span class="target-fraction">Target: <span id="tasbeeh-count-target">33</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons: Sound, Vibration, Reset -->
+          <div class="counter-actions">
+            <button id="tasbeeh-vibration-toggle" class="btn-icon-large active" aria-label="Toggle Vibration">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+            </button>
+            <button id="tasbeeh-reset" class="btn-icon-large danger" aria-label="Reset Counter">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+            <button id="tasbeeh-sound-toggle" class="btn-icon-large active" aria-label="Toggle Sound">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          
+          <button id="tasbeeh-save-session" class="btn btn-emerald btn-full mt-2"><i class="fa-solid fa-save"></i> Save Session</button>
+        </div>
+
+        <!-- Tasbeeh History panel -->
+        <div class="tasbeeh-history-card card">
+          <h3>Daily History</h3>
+          <div id="tasbeeh-history-list" class="history-list">
+            <div class="empty-state">
+              <i class="fa-solid fa-clock-rotate-left text-muted"></i>
+              <p>No history for today yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QIBLA VIEW -->
+    <section id="view-qibla" class="app-view">
+      <div class="view-header">
+        <h1>Qibla Finder</h1>
+        <p>Find the exact direction of the Kaaba from your location.</p>
+      </div>
+
+      <div class="qibla-container">
+        <!-- Qibla Info Details -->
+        <div class="qibla-info card glass-card">
+          <div class="qibla-deg-display">
+            <div>
+              <span class="label">Qibla Angle</span>
+              <h2 id="qibla-angle-val">--°</h2>
+            </div>
+            <div>
+              <span class="label">Distance to Kaaba</span>
+              <h2 id="qibla-distance-val">-,--- km</h2>
+            </div>
+          </div>
+          
+          <!-- Direction Accuracy Indicator -->
+          <div class="accuracy-badge warning" id="qibla-accuracy-bar">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span id="qibla-accuracy-text">Compass needs calibration or GPS coordinate lock.</span>
+          </div>
+        </div>
+
+        <!-- Physical Compass UI Element -->
+        <div class="compass-viewport">
+          <div class="compass-scale">
+            <!-- Compass Dial rotated dynamically in JS -->
+            <div id="compass-dial" class="compass-dial">
+              <div class="compass-direction north">N</div>
+              <div class="compass-direction east">E</div>
+              <div class="compass-direction south">S</div>
+              <div class="compass-direction west">W</div>
+              <!-- Gold Arrow pointing to Qibla -->
+              <div id="qibla-pointer" class="qibla-pointer">
+                <div class="kaaba-icon"><i class="fa-solid fa-kaaba"></i></div>
+                <div class="pointer-arrow"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calibration and Manual Compass Override -->
+        <div class="qibla-calibration-card card text-center">
+          <h4>Calibration Instructions</h4>
+          <p class="small text-muted mb-2">Move your mobile device in a figure-8 pattern to calibrate sensors. On desktop or if sensor access is denied, use the slider below to test compass rotation manually.</p>
+          <div class="desktop-slider-controls">
+            <label for="desktop-heading-slider">Mock Compass Heading (0° - 360°):</label>
+            <input type="range" id="desktop-heading-slider" min="0" max="360" value="0" class="slider-input">
+            <div class="slider-val-readout"><span id="slider-heading-val">0</span>°</div>
+          </div>
+          <button id="btn-request-compass" class="btn btn-outline btn-gold btn-small"><i class="fa-solid fa-mobile"></i> Re-request Sensor</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR VIEW -->
+    <section id="view-calendar" class="app-view">
+      <div class="view-header">
+        <h1>Islamic Calendar</h1>
+        <p>Track Hijri dates and observe important religious events.</p>
+      </div>
+
+      <div class="calendar-layout">
+        <!-- Calendar Grid Card -->
+        <div class="calendar-card card">
+          <div class="calendar-nav">
+            <button id="btn-prev-month" class="btn-icon"><i class="fa-solid fa-chevron-left"></i></button>
+            <h2 id="calendar-month-year">June 2026 / Dhul-Hijjah 1447</h2>
+            <button id="btn-next-month" class="btn-icon"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+          
+          <div class="calendar-grid-header">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+          
+          <div id="calendar-days-grid" class="calendar-days-grid">
+            <!-- Programmatically rendered days -->
+          </div>
+        </div>
+
+        <!-- Events List Sidebar -->
+        <div class="calendar-events card glass-card">
+          <h3>Upcoming Islamic Events</h3>
+          <div id="calendar-events-list" class="events-list">
+            <!-- Populated dynamically in JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GLOBAL SEARCH VIEW -->
+    <section id="view-search" class="app-view">
+      <div class="view-header">
+        <h1>Global Search</h1>
+        <p>Query Quran surahs, hadiths, and supplications in one click.</p>
+      </div>
+
+      <!-- Big Search Field -->
+      <div class="global-search-wrapper card highlight-border">
+        <div class="search-input-field">
+          <i class="fa-solid fa-magnifying-glass font-lg"></i>
+          <input type="text" id="global-search-input" placeholder="Type text to search (e.g. patience, fasting, prayer)...">
+          <button id="btn-clear-global-search" class="btn-close-small"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- Search Results Pane -->
+      <div id="global-search-results" class="global-search-results">
+        <div class="empty-state">
+          <i class="fa-solid fa-search-minus text-muted"></i>
+          <p>Enter a search query of at least 3 characters to find verses, Hadiths, and Duas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS VIEW -->
+    <section id="view-settings" class="app-view">
+      <div class="view-header">
+        <h1>Preferences & Settings</h1>
+        <p>Tailor calculations, themes, and translation options to your liking.</p>
+      </div>
+
+      <div class="settings-grid">
+        <!-- Styling Settings Card -->
+        <div class="settings-card card">
+          <h3><i class="fa-solid fa-palette text-emerald"></i> Themes & Layout</h3>
+          
+          <div class="form-group">
+            <label for="settings-theme-select">Visual Mode</label>
+            <select id="settings-theme-select" class="select-input">
+              <option value="light">Light Mode (Peaceful Alabaster)</option>
+              <option value="dark">Dark Mode (Midnight Emerald)</option>
+              <option value="system">Follow System Settings</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="settings-font-slider">Quran Reading Font Size</label>
+            <div class="font-size-slider-row">
+              <span class="small-text">A</span>
+              <input type="range" id="settings-font-slider" min="16" max="40" value="24" class="slider-input">
+              <span class="large-text">A</span>
+            </div>
+            <div class="slider-val-readout">Size: <span id="settings-font-readout">24px</span></div>
+          </div>
+        </div>
+
+        <!-- Calculation Settings Card -->
+        <div class="settings-card card">
+          <h3><i class="fa-solid fa-calculator text-gold"></i> Prayer Calculations</h3>
+
+          <div class="form-group">
+            <label for="settings-calc-method">Calculation Method</label>
+            <select id="settings-calc-method" class="select-input">
+              <option value="1">University of Islamic Sciences, Karachi</option>
+              <option value="2">Islamic Society of North America (ISNA)</option>
+              <option value="3" selected>Muslim World League (MWL)</option>
+              <option value="4">Umm Al-Qura University, Makkah</option>
+              <option value="5">Egyptian General Authority of Survey</option>
+              <option value="7">Institute of Geophysics, University of Tehran</option>
+              <option value="8">Gulf Region</option>
+              <option value="9">Kuwait</option>
+              <option value="12">Union Des Organisations Islamiques De France</option>
+              <option value="13">Diyanet İşleri Başkanlığı, Turkey</option>
+              <option value="14">Spiritual Administration of Muslims of Russia</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="settings-madhab">Juristic Method (Asr calculation)</label>
+            <select id="settings-madhab" class="select-input">
+              <option value="0" selected>Standard (Shafi'i, Maliki, Hanbali)</option>
+              <option value="1">Hanafi</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Translation & Language preferences -->
+        <div class="settings-card card">
+          <h3><i class="fa-solid fa-language text-emerald"></i> Language Preferences</h3>
+          
+          <div class="form-group">
+            <label for="settings-translation-select">Quran Translation</label>
+            <select id="settings-translation-select" class="select-input">
+              <option value="en.sahih">Sahih International (English)</option>
+              <option value="ta.tamil">Abdul Hameed Baqavi (Tamil)</option>
+              <option value="ur.jalandhry">Fateh Muhammad Jalandhri (Urdu)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Notification Switch Settings -->
+        <div class="settings-card card">
+          <h3><i class="fa-solid fa-bell text-gold"></i> Prayer Adhan Alarms</h3>
+          
+          <div class="toggle-list">
+            <div class="toggle-item">
+              <span>Fajr Adhan Alarm</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="alarm-fajr" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-item">
+              <span>Dhuhr Adhan Alarm</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="alarm-dhuhr" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-item">
+              <span>Asr Adhan Alarm</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="alarm-asr" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-item">
+              <span>Maghrib Adhan Alarm</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="alarm-maghrib" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="toggle-item">
+              <span>Isha Adhan Alarm</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="alarm-isha" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Bottom Tab Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <a href="#home" class="mobile-nav-item active" data-view="home">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="#quran" class="mobile-nav-item" data-view="quran">
+      <i class="fa-solid fa-book-quran"></i>
+      <span>Quran</span>
+    </a>
+    <a href="#prayer" class="mobile-nav-item" data-view="prayer">
+      <i class="fa-solid fa-clock"></i>
+      <span>Prayer</span>
+    </a>
+    <a href="#duas" class="mobile-nav-item" data-view="duas">
+      <i class="fa-solid fa-hands-praying"></i>
+      <span>Duas</span>
+    </a>
+    <a href="#" class="mobile-nav-item" id="mobile-btn-more">
+      <i class="fa-solid fa-bars"></i>
+      <span>More</span>
+    </a>
+  </nav>
+
+  <!-- Mobile 'More' Drawer Overlay -->
+  <div id="mobile-more-drawer" class="mobile-more-drawer">
+    <div class="drawer-header">
+      <h3>Quick Menu</h3>
+      <button id="btn-close-drawer" class="btn-close" aria-label="Close Menu"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-grid">
+      <div class="drawer-item" data-view="hadith">
+        <div class="drawer-icon bg-emerald-light"><i class="fa-solid fa-book-open"></i></div>
+        <span>Hadith</span>
+      </div>
+      <div class="drawer-item" data-view="tasbeeh">
+        <div class="drawer-icon bg-gold-light"><i class="fa-solid fa-calculator"></i></div>
+        <span>Tasbeeh</span>
+      </div>
+      <div class="drawer-item" data-view="qibla">
+        <div class="drawer-icon bg-emerald-light"><i class="fa-solid fa-compass"></i></div>
+        <span>Qibla</span>
+      </div>
+      <div class="drawer-item" data-view="calendar">
+        <div class="drawer-icon bg-gold-light"><i class="fa-solid fa-calendar-days"></i></div>
+        <span>Calendar</span>
+      </div>
+      <div class="drawer-item" data-view="settings">
+        <div class="drawer-icon bg-emerald-light"><i class="fa-solid fa-gear"></i></div>
+        <span>Settings</span>
+      </div>
+      <div class="drawer-item" data-view="search">
+        <div class="drawer-icon bg-gold-light"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <span>Global Search</span>
+      </div>
+    </div>
+  </div>
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+
+  <!-- QURAN READER OVERLAY PANEL -->
+  <div id="quran-reader-modal" class="quran-reader-modal">
+    <div class="reader-header">
+      <div class="reader-title-box">
+        <button id="btn-back-quran-list" class="btn-back"><i class="fa-solid fa-arrow-left"></i></button>
+        <div>
+          <h2 id="reader-surah-title">Surah --</h2>
+          <span id="reader-surah-subtitle">Meccan • -- Verses</span>
+        </div>
+      </div>
+      
+      <!-- Quick Reading settings icons -->
+      <div class="reader-quick-actions">
+        <button id="btn-reader-font-minus" class="btn-icon-small" aria-label="Decrease Font Size"><i class="fa-solid fa-minus"></i></button>
+        <span id="reader-font-size-indicator">24px</span>
+        <button id="btn-reader-font-plus" class="btn-icon-small" aria-label="Increase Font Size"><i class="fa-solid fa-plus"></i></button>
+        <button id="btn-reader-script-toggle" class="btn-text-badge active" title="IndoPak / Uthmani Script">IndoPak</button>
+      </div>
+    </div>
+
+    <!-- Reading pane scrolling container -->
+    <div id="quran-reader-content" class="reader-scroller">
+      <!-- Verses populated dynamically here -->
+    </div>
+  </div>
+
+  <!-- PDF.js library for Mushaf PDF Reading -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+
+  <!-- Modular Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/quran.js"></script>
+  <script src="js/prayer.js"></script>
+  <script src="js/qibla.js"></script>
+  <script src="js/duas.js"></script>
+  <script src="js/hadith.js"></script>
+  <script src="js/tasbeeh.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/search.js"></script>
+</body>
+</html>

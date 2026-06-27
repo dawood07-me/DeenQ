@@ -1,0 +1,14 @@
+{
+  "name": "modern-islamic-companion",
+  "version": "1.0.0",
+  "description": "Modern Islamic Companion - Web and Mobile App",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx -y local-web-server"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1"
+  }
+}
